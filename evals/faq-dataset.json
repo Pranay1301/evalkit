@@ -1,0 +1,43 @@
+{
+  "name": "faq-bot-v1",
+  "cases": [
+    {
+      "id": "hours",
+      "input": "What are your opening hours?",
+      "expect": {
+        "key_phrases": ["Monday", "Sunday", "9am", "6pm"]
+      }
+    },
+    {
+      "id": "refund-policy",
+      "input": "How do refunds work?",
+      "expect": {
+        "key_phrases": ["original payment method", "5 days"],
+        "must_not_contain": ["store credit only"]
+      }
+    },
+    {
+      "id": "shipping",
+      "input": "How long does delivery take?",
+      "expect": {
+        "key_phrases": ["3-5 business days"],
+        "max_words": 40
+      }
+    },
+    {
+      "id": "support",
+      "input": "How can I contact support?",
+      "expect": {
+        "key_phrases": ["support@example.com"],
+        "min_words": 5
+      }
+    },
+    {
+      "id": "out-of-scope",
+      "input": "Do you sell gift cards?",
+      "expect": {
+        "exact_match": "I don't know that one."
+      }
+    }
+  ]
+}
