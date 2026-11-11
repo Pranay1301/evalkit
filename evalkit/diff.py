@@ -1,9 +1,7 @@
 """Diff two saved runs: which cases flipped, and did the rate really move?
 
 Regression testing for prompts and pipelines: save a baseline run, change
-something, run again, and diff. Flips are reported per case; the rate
-change is flagged as possibly noise when the two bootstrap CIs overlap -
-small-N evals produce apparent movements that are not signal.
+something, run again, and diff. Flips are reported per case; intervals are descriptive, not a significance test.
 """
 
 from __future__ import annotations
@@ -38,11 +36,9 @@ def diff_runs(before: RunResult, after: RunResult) -> str:
     lines += [
         "",
         f"mean score: {ra:.1%} -> {rb:.1%}",
-        f"  before 95% CI {cia[0]:.1%}-{cia[1]:.1%}   after 95% CI {cib[0]:.1%}-{cib[1]:.1%}",
+        f"  before 95% bootstrap CI {cia[0]:.1%}-{cia[1]:.1%}   after 95% bootstrap CI {cib[0]:.1%}-{cib[1]:.1%}",
     ]
-    if cia[1] >= cib[0] and cib[1] >= cia[0]:
-        lines.append("  CIs overlap: the rate change may be noise at this sample size.")
-    else:
-        direction = "improvement" if rb > ra else "regression"
-        lines.append(f"  CIs do not overlap: likely a real {direction}.")
+    lines.append("  Descriptive intervals only, not a significance test or evidence of generalization.")
+    if not shared:
+        lines.append("  No shared case IDs: no comparable cases.")
     return "\n".join(lines)

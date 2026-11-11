@@ -28,6 +28,8 @@ def bootstrap_ci(
     """
     if not values:
         return (0.0, 0.0)
+    if resamples < 1 or not 0 < level < 1:
+        raise ValueError("resamples must be positive and level between zero and one")
     rng = random.Random(seed)
     n = len(values)
     means = sorted(
@@ -40,4 +42,4 @@ def bootstrap_ci(
 
 def format_rate(values: list[float], *, level: float = 0.95) -> str:
     lo, hi = bootstrap_ci(values, level=level)
-    return f"{pass_rate(values):.1%}  (95% CI {lo:.1%} - {hi:.1%}, n={len(values)})"
+    return f"{pass_rate(values):.1%}  ({level:.0%} bootstrap CI {lo:.1%} - {hi:.1%}, n={len(values)})"

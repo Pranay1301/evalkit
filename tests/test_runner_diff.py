@@ -66,4 +66,4 @@ def test_diff_flags_overlapping_cis_as_noise(tmp_path):
     after = Runner(ds).run(lambda s: "hello" if s == "hello" else "nothing")
     text = diff_runs(before, after)
     assert "fixed:  1" in text and "broken: 1" in text
-    assert "may be noise" in text
+    assert "not a significance test" in text
